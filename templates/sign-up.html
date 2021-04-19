@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="p-4 m-4">
+        <div class="col-lg-5 mx-auto p-4 border round">
+            {% if errMsg %}
+            <div class="alert alert-danger" role="alert">
+               {{ errMsg }}
+            </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3 mx-auto">
+                    <label for="First Name" class="form-label">First Name</label>
+                    <input type="text" class="form-control form-control-sm" id="First Name"
+                        name="first_name" value="{{ values.first_name }}">
+                </div>
+                <div class="mb-3 mx-auto">
+                    <label for="Last Name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control form-control-sm" id="Last Name"
+                    name="last_name" value="{{ values.last_name }}">
+                </div>
+                <div class="mb-3 mx-auto">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control form-control-sm" id="email"
+                         name="email" value="{{ values.email }}" required>
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3 mx-auto">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="number" class="form-control form-control-sm" id="phone"
+                         name="phone" value="{{ values.phone }}">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" name="password">
+                </div>
+ 
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
