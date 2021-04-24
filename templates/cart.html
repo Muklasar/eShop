@@ -1,31 +1,79 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="p-4 m-4">
-        <div class="col-lg-4 mx-auto p-4 border round">
-            {% if errMsg %}
-            <div class="alert alert-danger" role="alert">
-               {{ errMsg }}
-            </div>
-            {% endif %}
-            <form method="POST">
-                {% csrf_token %}
-                <div class="mb-3 mx-auto">
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control form-control-sm" id="email"
-                         name="email" value="{{ email }}" required>
-                </div>
+{% load cart %}
+{% load custom %}
+<div class="container pt-5">
+    <p class="display-4">Cart</p>
+    <table class="table table-info p-4 m-4">
+        <thead>
+            <tr>
+                <th class="text-center" scope="col">ID</th>
+                <th class="text-center" scope="col">Image</th>
+                <th class="text-center" scope="col">Name</th>
+                <th class="text-center" scope="col">Price(Rs.)</th>
+                <th class="text-center" scope="col">Quantity</th>
+                <th class="text-center" scope="col">Total(Rs.)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td class="text-center"><img style="height:80px" src="{{ product.image.url }}" alt=""></td>
+                <td class="text-center">{{ product.name }}</td>
+                <td class="text-center">{{ product.price|currency }}</td>
+                <td class="text-center">{{ product|cart_quantity:request.session.cart }}</td>
+                <td class="text-center">{{ product|total_price:request.session.cart|currency }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfooter>
+            <tr>
+                <th colspan="4"></th>
+                <th class="text-center" colspan="1">Total</th>
+                <th class="text-center">{{ products|cart_total:request.session.cart|currency }}</th>
+            </tr>
+        </tfooter>
+        <tr mt-2>
+            <th colspan="5"></th>
+            <th class="text-center">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Checkout
+                </button>
+            </th>
+        </tr>
+        
+    </table>
+    <!-- Button trigger modal -->
+    
 
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" name="password">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enter Address and Phone</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
- 
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+                <div class="modal-body">
+                    <form action="/checkout" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Address</label>
+                          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="address">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="phone">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 
 {% endblock %}

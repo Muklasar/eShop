@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load custom %}
+<div class="container pt-5 text-center">
+    <p class="display-4">Your Orders</p>
+    <table class="table  p-4 m-4 ">
+        <thead>
+            <tr>
+                <th class="text-center" scope="col">ID</th>
+                <th class="text-center" scope="col">Image</th>
+                <th class="text-center" scope="col">Name</th>
+                <th class="text-center" scope="col">Date</th>
+                <th class="text-center" scope="col">Price(Rs.)</th>
+                <th class="text-center" scope="col">Quantity</th>
+                <th class="text-center" scope="col">Total(Rs.)</th>
+                <th class="text-center" scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td class="text-center"><img style="height:80px" src="{{ order.product.image.url }}" alt=""></td>
+                <td class="text-center">{{ order.product.name }}</td>
+                <td class="text-center">{{ order.date }}</td>
+                <td class="text-center">{{ order.price|currency }}</td>
+                <td class="text-center">{{ order.quantity }}</td>
+                <td class="text-center">{{ order.price|total:order.quantity|currency }}</td>
+                {% if order.completed %}
+                <td class="text-center">
+                    <small class="badge badge-success">completed</small>
+                </td>
+                {% else %}
+                <td class="text-center">
+                    <small class="badge badge-success">pending</small>
+                </td>
+                {% endif %}
+
+            </tr>
+            {% endfor %}
+        </tbody>
+      
+        
+    </table>
+</div>
+
+
+{% endblock %}

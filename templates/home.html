@@ -34,7 +34,6 @@
                                     <input type="submit" value="-"  class="btn btn-block btn-secondary">
                                 </form>
                                 <div class="col d-flex align-items-center justify-content-center">{{ product|cart_quantity:request.session.cart }} in cart</div>
-                                <!-- <input type="submit" value=" + " class="col-2 btn btn-block btn-secondary"> -->
                                 <form action="/#{{ product.id }}" method="post" class="col-2 d-flex align-items-center justify-content-center">
                                     {% csrf_token %}
                                     <input hidden type="text" value="{{ product.id }}" name="product">
